@@ -29,6 +29,7 @@ Languages that listed a **Package** below are 3rd party languages and are not bu
 | Awk                     | awk, mawk, nawk, gawk  |         |
 | Bash                    | bash, sh, zsh          |         |
 | Basic                   | basic                  |         |
+| BBCode                  | bbcode                 | [highlightjs-bbcode](https://github.com/RedGuy7/highlightjs-bbcode) |
 | BNF                     | bnf                    |         |
 | Brainfuck               | brainfuck, bf          |         |
 | C#                      | csharp, cs             |         |
@@ -108,7 +109,7 @@ Languages that listed a **Package** below are 3rd party languages and are not bu
 | LiveCode Server         | livecodeserver         |         |
 | LiveScript              | livescript, ls         |         |
 | Lua                     | lua                    |         |
-| Makefile                | makefile, mk, mak      |         |
+| Makefile                | makefile, mk, mak, make |        |
 | Markdown                | markdown, md, mkdown, mkd |      |
 | Mathematica             | mathematica, mma, wl   |         |
 | Matlab                  | matlab                 |         |
@@ -154,6 +155,7 @@ Languages that listed a **Package** below are 3rd party languages and are not bu
 | R                       | r                      |         |
 | Razor CSHTML            | cshtml, razor, razor-cshtml | [highlightjs-cshtml-razor](https://github.com/highlightjs/highlightjs-cshtml-razor) |
 | ReasonML                | reasonml, re           |         |
+| Rebol & Red             | redbol, rebol, red, red-system | [highlightjs-redbol](https://github.com/oldes/highlightjs-redbol) |
 | RenderMan RIB           | rib                    |         |
 | RenderMan RSL           | rsl                    |         |
 | Roboconf                | graph, instances       |         |

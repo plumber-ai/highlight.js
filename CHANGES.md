@@ -1,8 +1,34 @@
-## Version 10.4.0 (a work in process)
+## Version 10.5.0 preparation
 
-Parser:
+New Languages:
 
-- enh(parser) use negative look-ahead for `beginKeywords` support (#2813) [Josh Goebel][]
+- Added 3rd party Red & Rebol grammar to SUPPORTED_LANGUAGES (#2872) [Oldes Huhuman][]
+
+Language improvements:
+
+- enh(makefile): Add `make` as an alias (#2883) [tripleee][]
+
+Grammar improvements:
+
+- enh(vb) Large rework of VB.net grammar (#2808) [Jan Pilzer][]
+  - Adds support for Date data types, see (#2775)
+  - Adds support for `REM` comments and fixes `'''` doctags (#2875) (#2851)
+    - Custom number mode to support VB.net specific number flags
+    - Hex (&H), Oct (&O), and binary (&B) prefixes
+    - Separating digits with underscores: 90_946
+  - Type suffixes: 123UI (unsigned integer)
+  - Improves directives detection and adds support for `Enable`, `Disable`, and `Then` keywords
+  - Adds more markup tests
+
+[Jan Pilzer]: https://github.com/Hirse
+[Oldes Huhuman]: https://github.com/Oldes
+[Josh Goebel]: https://github.com/joshgoebel
+[tripleee]: https://github.com/tripleee
+
+
+## Version 10.4.0
+
+A largish release with many improvements and fixes from quite a few different contributors.  Enjoy!
 
 Deprecations:
 
@@ -12,16 +38,26 @@ Deprecations:
 
 Parser:
 
+- enh(parser) use negative look-ahead for `beginKeywords` support (#2813) [Josh Goebel][]
+- enh(grammars) allow `classNameAliases` for more complex grammars [Josh Goebel][]
 - fix(vue): Language name now appears in CSS class (#2807) [Michael Rush][]
 - (chore) Clean up all regexs to be UTF-8 compliant/ready (#2759) [Josh Goebel][]
 
 New Languages:
 
 - Added 3rd party Chapel grammar to SUPPORTED_LANGUAGES (#2806) [Brad Chamberlain][]
+- Added BBCode grammar to SUPPORTED_LANGUAGES (#2867) [Paul Reid][]
 - enh(javascript) Added `node-repl` for Node.js REPL sessions (#2792) [Marat Nagayev][]
 
 Language Improvements:
 
+- enh(shell) Recognize prompts which contain tilde `~` (#2859) [Guillaume Grossetie][]
+- enh(shell) Add support for multiline commands with line continuation `\` (#2861) [Guillaume Grossetie][]
+- enh(autodetect) Over 30+ improvements to auto-detect (#2745) [Josh Goebel][]
+    - 4-5% improvement in auto-detect against large sample set
+    - properties, angelscript, lsl, javascript, n1ql, ocaml, ruby
+    - protobuf, hy, scheme, crystal, yaml, r, vbscript, groovy
+    - python, java, php, lisp, matlab, clojure, csharp, css
 - fix(r) fixed keywords not properly spaced (#2852) [Josh Goebel][]
 - fix(javascript) fix potential catastrophic backtracking (#2852) [Josh Goebel][]
 - fix(livescript) fix potential catastrophic backtracking (#2852) [Josh Goebel][]
@@ -52,15 +88,13 @@ Dev Improvements:
 - chore(dev) add theme picker to the tools/developer tool (#2770) [Josh Goebel][]
 - fix(dev) the Vue.js plugin no longer throws an exception when hljs is not in the global namespace [Kyle Brown][]
 
-Parser:
-
-- enh(grammars) allow `classNameAliases` for more complex grammars [Josh Goebel][]
-
 New themes:
 
 - *StackOverflow Dark* by [Jan Pilzer][]
 - *StackOverflow Light* by [Jan Pilzer][]
 
+[Guillaume Grossetie]: https://github.com/mogztter
+[Brad Chamberlain]: https://github.com/bradcray
 [Marat Nagayev]: https://github.com/nagayev
 [Fredrik Ekre]: https://github.com/fredrikekre
 [Richard Gibson]: https://github.com/gibson042
@@ -72,6 +106,7 @@ New themes:
 [Patrick Scheibe]: https://github.com/halirutan
 [Kyle Brown]: https://github.com/kylebrown9
 [Marcus Ortiz]: https://github.com/mportiz08
+[Paul Reid]: https://github.com/RedGuy12
 
 
 ## Version 10.3.1

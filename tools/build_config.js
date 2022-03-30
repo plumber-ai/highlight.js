@@ -1,5 +1,6 @@
-const cjsPlugin = require('rollup-plugin-commonjs');
-const jsonPlugin = require('rollup-plugin-json');
+const cjsPlugin = require('@rollup/plugin-commonjs');
+const jsonPlugin = require('@rollup/plugin-json');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
 
 module.exports = {
   build_dir: "build",
@@ -12,6 +13,7 @@ module.exports = {
         plugins: [
           cjsPlugin(),
           jsonPlugin(),
+          nodeResolve(),
           {
             transform: (x) => {
               if (/var module/.exec(x)) {
@@ -25,7 +27,11 @@ module.exports = {
     },
     browser_core: {
       input: {
-        plugins: [jsonPlugin()]
+        plugins: [
+          jsonPlugin(),
+          cjsPlugin(),
+          nodeResolve()
+        ]
       },
       output: {
         name: "hljs",
@@ -54,6 +60,8 @@ module.exports = {
       ascii_only: true
     },
     compress: {
+      ecma: 2015,
+      unsafe_arrows: true,
       passes: 2,
       unsafe: true,
       warnings: true,
