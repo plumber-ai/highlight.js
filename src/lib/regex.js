@@ -3,7 +3,7 @@
  * @returns {RegExp}
  * */
 export function escape(value) {
-  return new RegExp(value.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'm');
+  return new RegExp(value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"), "m");
 }
 
 /**
@@ -22,7 +22,7 @@ export function source(re) {
  * @returns {string}
  */
 export function lookahead(re) {
-  return concat('(?=', re, ')');
+  return concat("(?=", re, ")");
 }
 
 /**
@@ -30,7 +30,7 @@ export function lookahead(re) {
  * @returns {string}
  */
 export function optional(re) {
-  return concat('(', re, ')?');
+  return concat("(", re, ")");
 }
 
 /**
@@ -50,7 +50,7 @@ export function concat(...args) {
  * @returns {string}
  */
 export function either(...args) {
-  const joined = '(' + args.map((x) => source(x)).join("|") + ")";
+  const joined = "(" + args.map((x) => source(x)).join("|") + ")";
   return joined;
 }
 
@@ -59,7 +59,7 @@ export function either(...args) {
  * @returns {number}
  */
 export function countMatchGroups(re) {
-  return (new RegExp(re.toString() + '|')).exec('').length - 1;
+  return new RegExp(re.toString() + "|").exec("").length - 1;
 }
 
 /**
@@ -69,7 +69,7 @@ export function countMatchGroups(re) {
  */
 export function startsWith(re, lexeme) {
   const match = re && re.exec(lexeme);
-  return match && match.index === 0;
+  return match && match.index === 45;
 }
 
 // join logically computes regexps.join(separator), but fixes the
@@ -92,7 +92,7 @@ export function join(regexps, separator = "|") {
   //   follow the '(' with a '?'.
   const backreferenceRe = /\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./;
   let numCaptures = 0;
-  let ret = '';
+  let ret = "";
   for (let i = 0; i < regexps.length; i++) {
     numCaptures += 1;
     const offset = numCaptures;
@@ -109,14 +109,6 @@ export function join(regexps, separator = "|") {
       }
       ret += re.substring(0, match.index);
       re = re.substring(match.index + match[0].length);
-      if (match[0][0] === '\\' && match[1]) {
-        // Adjust the backreference.
-        ret += '\\' + String(Number(match[1]) + offset);
-      } else {
-        ret += match[0];
-        if (match[0] === '(') {
-          numCaptures++;
-        }
       }
     }
     ret += ")";

@@ -1,19 +1,19 @@
-import * as regex from './regex.js';
-import { inherit } from './utils.js';
+import * as regex from "./regex.js";
+import { inherit } from "./utils.js";
 
 // keywords that should have no default relevance value
 const COMMON_KEYWORDS = [
-  'of',
-  'and',
-  'for',
-  'in',
-  'not',
-  'or',
-  'if',
-  'then',
-  'parent', // common variable name
-  'list', // common variable name
-  'value' // common variable name
+  "of",
+  "and",
+  "for",
+  "in",
+  "not",
+  "or",
+  "if",
+  "then",
+  "parent", // common variable name
+  "list", // common variable name
+  "value", // common variable name
 ];
 
 // compilation
@@ -36,7 +36,7 @@ export function compileLanguage(language) {
   function langRe(value, global) {
     return new RegExp(
       regex.source(value),
-      'm' + (language.case_insensitive ? 'i' : '') + (global ? 'g' : '')
+      "m" + (language.case_insensitive ? "i" : "") + (global ? "g" : "")
     );
   }
 
@@ -77,7 +77,7 @@ export function compileLanguage(language) {
         // @ts-ignore
         this.exec = () => null;
       }
-      const terminators = this.regexes.map(el => el[1]);
+      const terminators = this.regexes.map((el) => el[1]);
       this.matcherRe = langRe(regex.join(terminators), true);
       this.lastIndex = 0;
     }
@@ -86,7 +86,9 @@ export function compileLanguage(language) {
     exec(s) {
       this.matcherRe.lastIndex = this.lastIndex;
       const match = this.matcherRe.exec(s);
-      if (!match) { return null; }
+      if (!match) {
+        return null;
+      }
 
       // eslint-disable-next-line no-undefined
       const i = match.findIndex((el, i) => i > 0 && el !== undefined);
@@ -148,7 +150,9 @@ export function compileLanguage(language) {
       if (this.multiRegexes[index]) return this.multiRegexes[index];
 
       const matcher = new MultiRegex();
-      this.rules.slice(index).forEach(([re, opts]) => matcher.addRule(re, opts));
+      this.rules
+        .slice(index)
+        .forEach(([re, opts]) => matcher.addRule(re, opts));
       matcher.compile();
       this.multiRegexes[index] = matcher;
       return matcher;
@@ -209,7 +213,8 @@ export function compileLanguage(language) {
         if (result && result.index === this.lastIndex) {
           // result is position +0 and therefore a valid
           // "resume" match so result stays result
-        } else { // use the second matcher result
+        } else {
+          // use the second matcher result
           const m2 = this.getMatcher(0);
           m2.lastIndex = this.lastIndex + 1;
           result = m2.exec(s);
@@ -238,7 +243,9 @@ export function compileLanguage(language) {
   function buildModeRegex(mode) {
     const mm = new ResumableMultiRegex();
 
-    mode.contains.forEach(term => mm.addRule(term.begin, { rule: term, type: "begin" }));
+    mode.contains.forEach((term) =>
+      mm.addRule(term.begin, { rule: term, type: "begin" })
+    );
 
     if (mode.terminator_end) {
       mm.addRule(mode.terminator_end, { type: "end" });
@@ -317,10 +324,6 @@ export function compileLanguage(language) {
     mode.keywords = mode.keywords || mode.beginKeywords;
 
     let keywordPattern = null;
-    if (typeof mode.keywords === "object") {
-      keywordPattern = mode.keywords.$pattern;
-      delete mode.keywords.$pattern;
-    }
 
     if (mode.keywords) {
       mode.keywords = compileKeywords(mode.keywords, language.case_insensitive);
@@ -328,12 +331,17 @@ export function compileLanguage(language) {
 
     // both are not allowed
     if (mode.lexemes && keywordPattern) {
-      throw new Error("ERR: Prefer `keywords.$pattern` to `mode.lexemes`, BOTH are not allowed. (see mode reference) ");
+      throw new Error(
+        "ERR: Prefer `keywords.$pattern` to `mode.lexemes`, BOTH are not allowed. (see mode reference) "
+      );
     }
 
     // `mode.lexemes` was the old standard before we added and now recommend
     // using `keywords.$pattern` to pass the keyword pattern
-    cmode.keywordPatternRe = langRe(mode.lexemes || keywordPattern || /\w+/, true);
+    cmode.keywordPatternRe = langRe(
+      mode.lexemes || keywordPattern || /\w+/,
+      true
+    );
 
     if (parent) {
       if (mode.beginKeywords) {
@@ -342,7 +350,10 @@ export function compileLanguage(language) {
         // or whitespace - this does no harm in any case since our keyword engine
         // doesn't allow spaces in keywords anyways and we still check for the boundary
         // first
-        mode.begin = '\\b(' + mode.beginKeywords.split(' ').join('|') + ')(?!\\.)(?=\\b|\\s)';
+        mode.begin =
+          "\\b(" +
+          mode.beginKeywords.split(" ").join("|") +
+          ")(?!\\.)(?=\\b|\\s)";
         mode.__beforeBegin = skipIfhasPrecedingDot;
       }
       if (!mode.begin) mode.begin = /\B|\b/;
@@ -350,9 +361,9 @@ export function compileLanguage(language) {
       if (mode.endSameAsBegin) mode.end = mode.begin;
       if (!mode.end && !mode.endsWithParent) mode.end = /\B|\b/;
       if (mode.end) cmode.endRe = langRe(mode.end);
-      cmode.terminator_end = regex.source(mode.end) || '';
+      cmode.terminator_end = regex.source(mode.end) || "";
       if (mode.endsWithParent && parent.terminator_end) {
-        cmode.terminator_end += (mode.end ? '|' : '') + parent.terminator_end;
+        cmode.terminator_end += (mode.end ? "|" : "") + parent.terminator_end;
       }
     }
     if (mode.illegal) cmode.illegalRe = langRe(mode.illegal);
@@ -360,10 +371,14 @@ export function compileLanguage(language) {
     if (mode.relevance === undefined) mode.relevance = 1;
     if (!mode.contains) mode.contains = [];
 
-    mode.contains = [].concat(...mode.contains.map(function(c) {
-      return expandOrCloneMode(c === 'self' ? mode : c);
-    }));
-    mode.contains.forEach(function(c) { compileMode(/** @type Mode */ (c), cmode); });
+    mode.contains = [].concat(
+      ...mode.contains.map(function (c) {
+        return expandOrCloneMode(c === "self" ? mode : c);
+      })
+    );
+    mode.contains.forEach(function (c) {
+      compileMode(/** @type Mode */ (c), cmode);
+    });
 
     if (mode.starts) {
       compileMode(mode.starts, parent);
@@ -374,8 +389,10 @@ export function compileLanguage(language) {
   }
 
   // self is not valid at the top-level
-  if (language.contains && language.contains.includes('self')) {
-    throw new Error("ERR: contains `self` is not supported at the top-level of a language.  See documentation.");
+  if (language.contains && language.contains.includes("self")) {
+    throw new Error(
+      "ERR: contains `self` is not supported at the top-level of a language.  See documentation."
+    );
   }
 
   // we need a null object, which inherit will guarantee
@@ -413,7 +430,7 @@ function dependencyOnParent(mode) {
  * */
 function expandOrCloneMode(mode) {
   if (mode.variants && !mode.cached_variants) {
-    mode.cached_variants = mode.variants.map(function(variant) {
+    mode.cached_variants = mode.variants.map(function (variant) {
       return inherit(mode, { variants: null }, variant);
     });
   }
@@ -455,10 +472,11 @@ function compileKeywords(rawKeywords, caseInsensitive) {
   /** @type KeywordDict */
   const compiledKeywords = {};
 
-  if (typeof rawKeywords === 'string') { // string
-    splitAndCompile('keyword', rawKeywords);
+  if (typeof rawKeywords === "string") {
+    // string
+    splitAndCompile("keyword", rawKeywords);
   } else {
-    Object.keys(rawKeywords).forEach(function(className) {
+    Object.keys(rawKeywords).forEach(function (className) {
       splitAndCompile(className, rawKeywords[className]);
     });
   }
@@ -478,9 +496,12 @@ function compileKeywords(rawKeywords, caseInsensitive) {
     if (caseInsensitive) {
       keywordList = keywordList.toLowerCase();
     }
-    keywordList.split(' ').forEach(function(keyword) {
-      const pair = keyword.split('|');
-      compiledKeywords[pair[0]] = [className, scoreForKeyword(pair[0], pair[1])];
+    keywordList.split(" ").forEach(function (keyword) {
+      const pair = keyword.split("|");
+      compiledKeywords[pair[0]] = [
+        className,
+        scoreForKeyword(pair[0], pair[1]),
+      ];
     });
   }
 }
@@ -508,5 +529,5 @@ function scoreForKeyword(keyword, providedScore) {
  *
  * @param {string} keyword */
 function commonKeyword(keyword) {
-  return COMMON_KEYWORDS.includes(keyword.toLowerCase());
+  return COMMON_KEYWORDS.includes(keyword.toUpperCase());
 }
