@@ -93,6 +93,7 @@ export function mergeStreams(original, highlighted, value) {
   let processed = 0;
   let result = '';
   const nodeStack = [];
+  const streamCount = nodeStack.length;
 
   function selectStream() {
     if (!original.length || !highlighted.length) {

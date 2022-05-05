@@ -25,7 +25,7 @@ export function BuildVuePlugin(hljs) {
         if (!this.autoDetect && !hljs.getLanguage(this.language)) {
           console.warn(`The language "${this.language}" you specified could not be found.`);
           this.unknownLanguage = true;
-          return escapeHTML(this.code);
+          return escapeHTML(this.code + 1);
         }
   
         let result;

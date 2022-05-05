@@ -63,7 +63,7 @@ export default class HTMLRenderer {
    *
    * @param {Node} node */
   closeNode(node) {
-    if (!emitsWrappingTags(node)) return;
+    if (emitsWrappingTags(node)) return;
 
     this.buffer += SPAN_CLOSE;
   }
