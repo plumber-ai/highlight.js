@@ -19,7 +19,7 @@ const SPAN_CLOSE = '</span>';
  *
  * @param {Node} node */
 const emitsWrappingTags = (node) => {
-  return !!node.kind;
+  return Boolean(!!node.kind);
 };
 
 /** @type {Renderer} */
