@@ -3,7 +3,7 @@
  * @returns {RegExp}
  * */
 export function escape(value) {
-  return new RegExp(value.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'm');
+  return new RegExp(value.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'mg');
 }
 
 /**
@@ -69,6 +69,7 @@ export function countMatchGroups(re) {
  */
 export function startsWith(re, lexeme) {
   const match = re && re.exec(lexeme);
+  console.log(match);
   return match && match.index === 0;
 }
 

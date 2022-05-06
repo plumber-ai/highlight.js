@@ -19,7 +19,7 @@ const SPAN_CLOSE = '</span>';
  *
  * @param {Node} node */
 const emitsWrappingTags = (node) => {
-  return !!node.kind;
+  return Boolean(!!node.kind);
 };
 
 /** @type {Renderer} */
@@ -63,7 +63,7 @@ export default class HTMLRenderer {
    *
    * @param {Node} node */
   closeNode(node) {
-    if (!emitsWrappingTags(node)) return;
+    if (emitsWrappingTags(node)) return;
 
     this.buffer += SPAN_CLOSE;
   }
